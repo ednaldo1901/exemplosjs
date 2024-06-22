@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Ordenando Valores</title>
+    <!-- Incluindo Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="ordenando.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Ordenando Valores</h3>
+                <div class="form-group">
+                    <label for="valor">Valor</label>
+                    <input type="number" class="form-control" id="valor">
+                </div>
+                <button class="btn btn-primary mb-3" onclick="add()">Adicionar</button>
+                <div class="form-group">
+                    <label for="metodo">Método de Ordenação</label>
+                    <select class="form-control" id="metodo">
+                        <option>Bubble Sort</option>
+                        <option>Selection Sort</option>
+                        <option>Quick Sort</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary mb-3" onclick="ordenar()">Ordenar</button>
+                <button class="btn btn-secondary mb-3" onclick="misturar()">Misturar</button>
+                <ul class="list-group" id="valores"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incluindo Bootstrap JS e dependências -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function add() {
+            let valor = document.getElementById('valor').value;
+            let lista = document.getElementById('valores');
+            let node = document.createElement('li');
+            node.className = 'list-group-item';
+            let textnode = document.createTextNode(valor);
+            node.appendChild(textnode);
+            lista.appendChild(node);
+        }
+
+        function ordenar() {
+            let lista = document.getElementById('valores');
+            let metodo = document.getElementById('metodo');
+            let itens = lista.children;
+            let valores = [];
+            for (let i = 0; i < itens.length; i++) {
+                valores.push(parseInt(itens[i].innerHTML));
+            }
+            switch (metodo.selectedIndex) {
+                case 0:
+                    valores = bubble_sort(valores);
+                    break;
+                case 1:
+                    valores = selection_sort(valores);
+                    break;
+                case 2:
+                    valores = quick_sort(valores, 0, valores.length - 1);
+                    break;
+            }
+            lista.innerHTML = valores.map(v => `<li class="list-group-item">${v}</li>`).reduce((a, b) => a + b, '');
+        }
+
+        function misturar() {
+            let lista = document.getElementById('valores');
+            let itens = lista.children;
+            let valores = [];
+            for (let i = 0; i < itens.length; i++) {
+                valores.push(parseInt(itens[i].innerHTML));
+            }
+            shuffle(valores, valores.length * 2);
+            lista.innerHTML = valores.map(v => `<li class="list-group-item">${v}</li>`).reduce((a, b) => a + b, '');
+        }
+    </script>
+</body>
+</html>
+
